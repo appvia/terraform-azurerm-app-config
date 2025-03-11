@@ -1,4 +1,4 @@
-variable "create_resourcegroup" {
+variable "create_resource_group" {
   description = "Flag to determine if a new resource group should be created."
   type        = bool
   default     = false
