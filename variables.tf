@@ -18,3 +18,80 @@ variable "location" {
   description = "The location to create the resources in."
   type        = string
 }
+
+variable "prevent_destroy" {
+    description = "Do not allow deletion of the app config with automation"
+    type        = bool
+    default     = false
+}
+
+variable "sku" {
+  description = "The SKU of this App Configuration store. Value must be \"free\" or \"standard\"."
+  type        = string
+  default     = "standard"
+  nullable    = false
+
+  validation {
+    condition     = contains(["free", "standard"], var.sku)
+    error_message = "Sku must be \"free\" or \"standard\"."
+  }
+}
+
+variable "local_auth_enabled" {
+  description = "Is local authentication using access keys enabled for this App Configuration store?"
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "soft_delete_retention_days" {
+  description = "The number of days that items should be retained for once soft-deleted. Value must be between 1 and 7."
+  type        = number
+  default     = 7
+  nullable    = false
+
+  validation {
+    condition     = var.soft_delete_retention_days >= 1 && var.soft_delete_retention_days <= 7
+    error_message = "The soft delete retention days must be between 1 and 7."
+  }
+}
+
+variable "purge_protection_enabled" {
+  description = "Is purge protection enabled for this App Configuration store?"
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "system_assigned_identity_enabled" {
+  description = "Should the system-assigned identity be enabled for this App Configuration store?"
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "identity_ids" {
+  description = "A list of IDs of managed identities to be assigned to this App Configuration store."
+  type        = list(string)
+  default     = []
+  nullable    = false
+}
+
+variable "public_network_access" {
+  description = "The public network access setting for this App Configuration store. Value must be \"Enabled\" or \"Disabled\"."
+  type        = string
+  default     = "Disabled"
+  nullable    = false
+
+  validation {
+    condition     = contains(["Enabled", "Disabled"], var.public_network_access)
+    error_message = "Public network access must be \"Enabled\" or \"Disabled\"."
+  }
+}
+
+variable "tags" {
+  description = "A map of tags to assign to the resources."
+  type        = map(string)
+  default     = {}
+  nullable    = false
+}
