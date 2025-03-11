@@ -1,11 +1,3 @@
-provider "azurerm" {
-  features {
-    app_configuration {
-      purge_soft_delete_on_destroy = false
-    }
-  }
-}
-
 module "log_analytics" {
   source = "github.com/equinor/terraform-azurerm-log-analytics?ref=v1.5.0"
 
