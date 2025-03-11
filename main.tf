@@ -35,7 +35,6 @@ resource "azurerm_app_configuration" "this" {
   }
 
   lifecycle {
-    # Prevent accidental destroy of App Configuration store.
-    prevent_destroy = var.prevent_destroy
+    prevent_destroy = false
   }
 }

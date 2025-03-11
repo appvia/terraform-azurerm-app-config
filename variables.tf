@@ -19,12 +19,6 @@ variable "location" {
   type        = string
 }
 
-variable "prevent_destroy" {
-    description = "Do not allow deletion of the app config with automation"
-    type        = bool
-    default     = false
-}
-
 variable "sku" {
   description = "The SKU of this App Configuration store. Value must be \"free\" or \"standard\"."
   type        = string
