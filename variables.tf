@@ -1,3 +1,9 @@
+variable "create_resourcegroup" {
+  description = "Flag to determine if a new resource group should be created."
+  type        = bool
+  default     = false
+}
+
 variable "name" {
     description = "The name of the app config resource"
     type        = string
