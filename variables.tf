@@ -89,3 +89,26 @@ variable "tags" {
   default     = {}
   nullable    = false
 }
+
+# New variables for configuration values
+
+variable "noun_value" {
+  description = "The noun value to store in the App Configuration"
+  type        = string
+  default     = "Wayfinder"
+  nullable    = false
+}
+
+variable "adjective_value" {
+  description = "The adjective value to store in the App Configuration"
+  type        = string
+  default     = "Awesome"
+  nullable    = false
+}
+
+variable "config_label" {
+  description = "The label to use for the configuration values"
+  type        = string
+  default     = "production"
+  nullable    = false
+}

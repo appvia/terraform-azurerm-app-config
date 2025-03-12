@@ -38,3 +38,32 @@ resource "azurerm_app_configuration" "this" {
     prevent_destroy = false
   }
 }
+
+# Add configuration key-value pairs
+resource "azurerm_app_configuration_key" "noun_value" {
+  configuration_store_id = azurerm_app_configuration.this.id
+  key                    = "noun_value"
+  label                  = var.config_label
+  value                  = var.noun_value
+  content_type           = "application/json"
+}
+
+resource "azurerm_app_configuration_key" "adjective_value" {
+  configuration_store_id = azurerm_app_configuration.this.id
+  key                    = "adjective_value"
+  label                  = var.config_label
+  value                  = var.adjective_value
+  content_type           = "application/json"
+}
+
+# Create connection string access keys for the configuration
+resource "azurerm_app_configuration_key" "configuration_json" {
+  configuration_store_id = azurerm_app_configuration.this.id
+  key                    = ".appconfig.featureflag/configuration"
+  label                  = var.config_label
+  value                  = jsonencode({
+    "noun_value": var.noun_value,
+    "adjective_value": var.adjective_value
+  })
+  content_type           = "application/json"
+}
