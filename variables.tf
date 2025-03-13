@@ -5,8 +5,8 @@ variable "create_resource_group" {
 }
 
 variable "name" {
-    description = "The name of the app config resource"
-    type        = string
+  description = "The name of the app config resource"
+  type        = string
 }
 
 variable "resource_group_name" {
@@ -91,7 +91,6 @@ variable "tags" {
 }
 
 # New variables for configuration values
-
 variable "noun_value" {
   description = "The noun value to store in the App Configuration"
   type        = string
@@ -110,5 +109,12 @@ variable "config_label" {
   description = "The label to use for the configuration values"
   type        = string
   default     = "production"
+  nullable    = false
+}
+
+variable "use_resource_group_in_name" {
+  description = "Flag to determine if the resource group name should be included in the App Configuration name for uniqueness"
+  type        = bool
+  default     = true
   nullable    = false
 }

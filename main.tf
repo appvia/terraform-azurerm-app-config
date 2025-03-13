@@ -5,6 +5,10 @@ locals {
   identity_type = join(", ", compact([var.system_assigned_identity_enabled ? "SystemAssigned" : "", length(var.identity_ids) > 0 ? "UserAssigned" : ""]))
 
   diagnostic_setting_metric_categories = ["AllMetrics"]
+
+  # Create a unique name for the App Configuration using resource group name
+  # Format: {name}-{resource_group_name} or just {name} if use_resource_group_in_name is false
+  unique_name = var.use_resource_group_in_name ? "${var.name}-${var.resource_group_name}" : var.name
 }
 
 resource "azurerm_resource_group" "this" {
@@ -14,7 +18,7 @@ resource "azurerm_resource_group" "this" {
 }
 
 resource "azurerm_app_configuration" "this" {
-  name                       = var.name
+  name                       = local.unique_name
   resource_group_name        = var.create_resource_group ? azurerm_resource_group.this[0].name : var.resource_group_name
   location                   = var.location
   sku                        = var.sku
@@ -46,6 +50,8 @@ resource "azurerm_app_configuration_key" "noun_value" {
   label                  = var.config_label
   value                  = var.noun_value
   content_type           = "application/json"
+
+  depends_on = [azurerm_app_configuration.this]
 }
 
 resource "azurerm_app_configuration_key" "adjective_value" {
@@ -54,6 +60,8 @@ resource "azurerm_app_configuration_key" "adjective_value" {
   label                  = var.config_label
   value                  = var.adjective_value
   content_type           = "application/json"
+
+  depends_on = [azurerm_app_configuration.this]
 }
 
 # Create connection string access keys for the configuration
@@ -66,4 +74,10 @@ resource "azurerm_app_configuration_key" "configuration_json" {
     "adjective_value": var.adjective_value
   })
   content_type           = "application/json"
+
+  # Explicitly depend on the individual key-value pairs to ensure they're created first
+  depends_on = [
+    azurerm_app_configuration_key.noun_value,
+    azurerm_app_configuration_key.adjective_value
+  ]
 }
