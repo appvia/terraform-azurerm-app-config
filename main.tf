@@ -61,7 +61,8 @@ resource "azurerm_app_configuration_key" "adjective_value" {
   value                  = var.adjective_value
   content_type           = "application/json"
 
-  depends_on = [azurerm_app_configuration.this]
+  # Make sure this key is created only after the first key
+  depends_on = [azurerm_app_configuration_key.noun_value]
 }
 
 # Create connection string access keys for the configuration
@@ -77,7 +78,6 @@ resource "azurerm_app_configuration_key" "configuration_json" {
 
   # Explicitly depend on the individual key-value pairs to ensure they're created first
   depends_on = [
-    azurerm_app_configuration_key.noun_value,
     azurerm_app_configuration_key.adjective_value
   ]
 }
